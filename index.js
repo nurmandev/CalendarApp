@@ -14,6 +14,10 @@ app.use(cors());
 
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  console.log("Hello Calendar App");
+  res.send("Hello Calendar App");
+});
 app.use("/api/todos", todoRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
