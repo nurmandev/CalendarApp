@@ -22,6 +22,16 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 
+
+
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger_output.json");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
+
+
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {

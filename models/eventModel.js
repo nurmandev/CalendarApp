@@ -1,4 +1,3 @@
-//Taylor Zweigle, 2024
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;

@@ -1,4 +1,3 @@
-//Taylor Zweigle, 2024
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const validator = require("validator");

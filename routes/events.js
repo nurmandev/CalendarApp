@@ -1,4 +1,3 @@
-//Taylor Zweigle, 2024
 const express = require("express");
 
 const { getEvents, getEvent, createEvent, deleteEvent, updateEvent } = require("../controllers/eventController");

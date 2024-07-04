@@ -1,4 +1,3 @@
-//Taylor Zweigle, 2024
 const express = require("express");
 
 const { getTodos, getTodo, createTodo, deleteTodo, updateTodo } = require("../controllers/todoController");

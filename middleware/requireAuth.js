@@ -1,4 +1,3 @@
-//Taylor Zweigle, 2024
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/userModel");
