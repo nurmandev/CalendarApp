@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Event and User API",
+    "title": "Calendar App API",
     "description": "API documentation for the Event management system and User authentication",
     "version": "1.0.0"
   },
@@ -561,7 +561,15 @@
             "description": "ID of the user who created the todo"
           }
         },
-        "required": ["todo", "user", "type", "date", "checked", "creationTime", "creationUser"]
+        "required": [
+          "todo",
+          "user",
+          "type",
+          "date",
+          "checked",
+          "creationTime",
+          "creationUser"
+        ]
       }
     }
   }
