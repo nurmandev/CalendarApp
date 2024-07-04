@@ -16,6 +16,21 @@ const eventSchema = new Schema({
     type: String,
     required: true,
   },
+  title: {
+    type: String,
+  },
+  description: {
+    type: String,
+  },
+  color: {
+    type: String,
+  },
+  duration: {
+    type: String,
+  },
+  metadata: {
+    type: String,
+  },
   startTime: {
     type: Date,
     required: true,
