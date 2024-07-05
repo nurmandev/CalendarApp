@@ -14,6 +14,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  google: {
+    token: String,
+  },
+  outlook: {
+    token: String,
+  },
+  apple: {
+    icalUrl: String,
+  },
 });
 
 userSchema.statics.login = async function (username, password) {

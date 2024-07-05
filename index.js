@@ -1,12 +1,17 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const cors = require("cors");
+const connectDB = require("./config/db");
 
 require("dotenv").config();
+
+// Connect to MongoDB
+connectDB();
 
 const todoRoutes = require("./routes/todos");
 const eventRoutes = require("./routes/events");
 const userRoutes = require("./routes/users");
+const calendarRoutes = require("./routes/calendar");
+
 
 const app = express();
 
@@ -22,15 +27,15 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 
+app.use("/api/calendar", calendarRoutes);
+
+
+
+// Swagger Documentation
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger_output.json");
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    app.listen(process.env.PORT, () => {
-      console.log(`Listening on port ${process.env.PORT}...`);
-    });
-  })
-  .catch((error) => console.log(error));
+app.listen(process.env.PORT, () => {
+  console.log(`Listening on port ${process.env.PORT}...`);
+});

@@ -1,3 +1,4 @@
+// controllers/userController.js
 const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
@@ -42,7 +43,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// Logout function
 const logoutUser = (req, res) => {
   try {
     // Invalidate the token on the client side by deleting it from storage
@@ -52,4 +52,41 @@ const logoutUser = (req, res) => {
   }
 };
 
-module.exports = { getUsers, loginUser, registerUser, logoutUser };
+// Additional user functions for calendar details
+const addUserCalendarDetails = async (req, res) => {
+  const { userId, google, outlook, apple } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    user.google = google;
+    user.outlook = outlook;
+    user.apple = apple;
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user calendar details" });
+  }
+};
+
+const getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user" });
+  }
+};
+
+module.exports = {
+  getUsers,
+  loginUser,
+  registerUser,
+  logoutUser,
+  addUserCalendarDetails,
+  getUserById,
+};
