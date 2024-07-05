@@ -27,7 +27,7 @@ app.use("/api/todos", todoRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
 
-app.use("/api/calendar", calendarRoutes);
+app.use("/calendar", calendarRoutes);
 
 
 
