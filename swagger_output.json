@@ -721,39 +721,6 @@
           "creationTime",
           "creationUser"
         ]
-      },
-      "Calendar": {
-        "type": "object",
-        "required": [
-          "user",
-          "name",
-          "color",
-          "description",
-          "creationTime",
-          "creationUser"
-        ],
-        "properties": {
-          "user": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "color": {
-            "type": "string"
-          },
-          "creationTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "creationUser": {
-            "type": "string",
-            "description": "ID of the user who created the calendar"
-          }
-        }
       }
     }
   }
