@@ -455,128 +455,150 @@
         }
       }
     },
-    "/auth/google": {
+    "/auth-url": {
       "get": {
-        "tags": [
-          "Calendar"
-        ],
-        "summary": "Authenticate with Google",
-        "description": "Redirects the user to Google for authentication.",
-        "operationId": "authGoogle",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["Google Calendar"],
+        "summary": "Get Google Calendar OAuth2 Authorization URL",
+        "description": "Generates an authorization URL to start the OAuth2 flow for Google Calendar",
         "responses": {
-          "302": {
-            "description": "Redirect to Google authentication page."
+          "200": {
+            "description": "Successful response",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authUrl": {
+                  "type": "string",
+                  "example": "https://accounts.google.com/o/oauth2/auth?..."
+                }
+              }
+            }
           }
         }
       }
     },
-    "/auth/google/callback": {
+    "/access-token/{code}": {
       "get": {
-        "tags": [
-          "Calendar"
-        ],
-        "summary": "Google Authentication Callback",
-        "description": "Handles the callback from Google authentication and stores the tokens.",
-        "operationId": "authGoogleCallback",
-        "produces": [
-          "application/json"
-        ],
+        "tags": ["Google Calendar"],
+        "summary": "Get OAuth2 Access Token",
+        "description": "Exchanges the authorization code for an access token",
         "parameters": [
           {
             "name": "code",
-            "in": "query",
-            "description": "Authorization code returned by Google.",
+            "in": "path",
+            "description": "Authorization code returned by Google OAuth2",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Authentication successful message.",
+            "description": "Successful response",
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "access_token": {
+                  "type": "string",
+                  "example": "ya29.a0AfH6SM..."
+                },
+                "refresh_token": {
+                  "type": "string",
+                  "example": "1//0g..."
+                },
+                "scope": {
+                  "type": "string",
+                  "example": "https://www.googleapis.com/auth/calendar.events.public.readonly"
+                },
+                "token_type": {
+                  "type": "string",
+                  "example": "Bearer"
+                },
+                "expiry_date": {
+                  "type": "integer",
+                  "example": 1598471307000
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
+                }
+              }
             }
           }
         }
       }
     },
-    "/sync": {
-      "post": {
-        "tags": [
-          "Calendar"
-        ],
-        "summary": "Sync Calendar Events",
-        "description": "Syncs the user's calendar events and returns a list of upcoming events.",
-        "operationId": "syncCalendar",
-        "produces": [
-          "application/json"
-        ],
+    "/events/{access_token}": {
+      "get": {
+        "tags": ["Google Calendar"],
+        "summary": "Get Calendar Events",
+        "description": "Retrieves calendar events using the provided access token",
         "parameters": [
           {
-            "name": "tokens",
-            "in": "body",
-            "description": "OAuth2 tokens for Google Calendar API access.",
+            "name": "access_token",
+            "in": "path",
+            "description": "OAuth2 access token",
             "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "access_token": {
-                  "type": "string"
-                },
-                "refresh_token": {
-                  "type": "string"
-                },
-                "scope": {
-                  "type": "string"
-                },
-                "token_type": {
-                  "type": "string"
-                },
-                "expiry_date": {
-                  "type": "integer"
-                }
-              }
-            }
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "A list of upcoming events.",
+            "description": "Successful response",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "summary": {
-                    "type": "string"
-                  },
-                  "description": {
-                    "type": "string"
-                  },
-                  "start": {
+              "type": "object",
+              "properties": {
+                "events": {
+                  "type": "array",
+                  "items": {
                     "type": "object",
                     "properties": {
-                      "dateTime": {
+                      "id": {
                         "type": "string",
-                        "format": "date-time"
-                      }
-                    }
-                  },
-                  "end": {
-                    "type": "object",
-                    "properties": {
-                      "dateTime": {
+                        "example": "12345"
+                      },
+                      "summary": {
                         "type": "string",
-                        "format": "date-time"
+                        "example": "Event title"
+                      },
+                      "start": {
+                        "type": "object",
+                        "properties": {
+                          "dateTime": {
+                            "type": "string",
+                            "example": "2024-07-06T09:00:00-07:00"
+                          }
+                        }
+                      },
+                      "end": {
+                        "type": "object",
+                        "properties": {
+                          "dateTime": {
+                            "type": "string",
+                            "example": "2024-07-06T10:00:00-07:00"
+                          }
+                        }
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Error message"
                 }
               }
             }

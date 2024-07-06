@@ -10,8 +10,7 @@ connectDB();
 const todoRoutes = require("./routes/todos");
 const eventRoutes = require("./routes/events");
 const userRoutes = require("./routes/users");
-const calendarRoutes = require("./routes/calendar");
-
+const googleCalendarRoutes = require('./routes/googleCalendar');
 
 const app = express();
 
@@ -26,9 +25,7 @@ app.get("/", (req, res) => {
 app.use("/api/todos", todoRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);
-
-app.use("/calendar", calendarRoutes);
-
+app.use('/google-calendar', googleCalendarRoutes);
 
 
 // Swagger Documentation
