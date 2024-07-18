@@ -160,6 +160,61 @@
         }
       }
     },
+    "/events/{id}/invite": {
+      "post": {
+        "summary": "Invite a user to an event",
+        "tags": ["Invitation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitation created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          },
+          "404": {
+            "description": "User or Event not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Get all users",
@@ -520,6 +575,25 @@
           },
           "password": {
             "type": "string"
+          }
+        }
+      },
+      "Invitation": {
+        "type": "object",
+        "required": ["event", "invitee", "status"],
+        "properties": {
+          "event": {
+            "type": "string",
+            "example": "60b8d6c8541e3b4567890a3d"
+          },
+          "invitee": {
+            "type": "string",
+            "example": "60b8d6c8541e3b4567890a3e"
+          },
+          "status": {
+            "type": "string",
+            "default": "pending",
+            "example": "accepted"
           }
         }
       },
