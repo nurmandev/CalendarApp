@@ -160,6 +160,61 @@
         }
       }
     },
+    "/events/{id}/invite": {
+      "post": {
+        "summary": "Invite a user to an event",
+        "tags": ["Invitation"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  }
+                },
+                "required": ["email"]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Event ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitation created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Invitation"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User not authorized"
+          },
+          "404": {
+            "description": "User or Event not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "summary": "Get all users",
@@ -302,164 +357,6 @@
           },
           "500": {
             "description": "Failed to logout"
-          }
-        }
-      }
-    },
-    "/{id}/invite": {
-      "post": {
-        "summary": "Invite a user to an event",
-        "tags": ["Invitation"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Event ID"
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                  }
-                },
-                "required": ["email"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Invitation created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Invitation"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "User not authorized"
-          },
-          "404": {
-            "description": "User or Event not found"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
-    "/{id}/rsvp": {
-      "post": {
-        "summary": "RSVP to an event",
-        "tags": ["Invitation"],
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Event ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "RSVP successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Invitation"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Invitation not found"
-          },
-          "500": {
-            "description": "Server error"
-          }
-        }
-      }
-    },
-    "/send-invitation": {
-      "post": {
-        "summary": "Send an invitation",
-        "tags": ["Invitation"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "user@example.com"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": ["calendar", "event"],
-                    "example": "event"
-                  },
-                  "details": {
-                    "type": "string",
-                    "example": "Event details here"
-                  }
-                },
-                "required": ["email", "type", "details"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Invitation sent successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "example": {
-                    "message": "Event invitation sent successfully"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input"
-          },
-          "500": {
-            "description": "Failed to send invitation"
           }
         }
       }
@@ -683,6 +580,7 @@
       },
       "Invitation": {
         "type": "object",
+        "required": ["event", "invitee", "status"],
         "properties": {
           "event": {
             "type": "string",
@@ -697,13 +595,6 @@
             "default": "pending",
             "example": "accepted"
           }
-        }
-      },
-      "securitySchemes": {
-        "bearerAuth": {
-          "type": "http",
-          "scheme": "bearer",
-          "bearerFormat": "JWT"
         }
       },
       "Todo": {
